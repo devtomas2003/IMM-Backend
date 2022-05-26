@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Clientes {
+  clientId String @unique
+  nome String
+  telef Int
+  nif Int
+  ccid String
+  muradaFat String
+  codPost String
+  localidadeFat String
+  email String
+  password String?
+  fatEletronic Boolean
+  accountState Int @default(0)
+  saldo Float
+  contracts Contracts[]
+  invoices Invoices[]
+}
+
+model Tariffs {
+  id String @unique
+  name String
+  priceDuringContract Float
+  priceAfterContract Float?
+  repeat Int
+  description String
+  observation String @db.LongText
+  appsLimit String
+  streamingLimit String
+  netLimit String
+  haveFidelization Boolean
+  fidelizationTime Int?
+  paidType Int
+  contracts Contracts[]
+}
+
+model Contracts {
+  contractId String @unique
+  clientAssociation Clientes @relation(fields: [clientId], references: [clientId])
+  clientId String
+  startContract DateTime?
+  nextCobration DateTime?
+  tarrifAssociated Tariffs @relation(fields: [tarrifId], references: [id])
+  tarrifId String
+  fidelizationDuration Int?
+  priceDuringContract Float
+  priceAfterContract Float?
+  isContract Boolean
+  endContract DateTime?
+  paidType Int
+  state Int @default(0)
+}
+
+model Invoices {
+  id String @unique
+  type Int
+  documentTotal Float
+  documentTotalIva Float
+  clientAssociated Clientes @relation(fields: [clientId], references: [clientId])
+  clientId String
+  docNumber Int @unique @default(autoincrement())
+  payMethod Int
+  vencimento DateTime
+  date DateTime
+  softwareCode String
+  atCode String
+  mbReference String
+  details InvoicesDetails[]
+}
+
+model InvoicesDetails {
+  detailId String @unique
+  invoiceAssociated Invoices @relation(fields: [invoiceId], references: [id])
+  invoiceId String
+  descriptionItem String
+  ivaItem Int
+  priceItemIva Float
+  qtdItem Int
+}
