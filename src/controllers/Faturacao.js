@@ -14,11 +14,24 @@ module.exports = {
                 details: true
             }
         });
-        let products = [];
+        let products = [[ { text: 'Qtd', style: ['tabPad'] }, { text: 'Descrição', style: ['tabPad'] }, { text: 'IVA', style: ['tabPad'] }, { text: 'Preço Unit (c/IVA)', style: ['tabPad'] }, { text: 'Total IVA', style: ['tabPad'] }, { style: ['tabPad'], text: 'Preço Total (c/IVA)' }],];
         for(let i = 0; i <= invoice.details.length-1; i++){
-            products.push({ text: invoice.details[i].qtdItem.toString(), style: ['tabPad'] }, { text: invoice.details[i].descriptionItem, style: ['tabPad'] }, { text: '23%', style: ['tabPad'] }, { text: '1,00 €', style: ['tabPad'] }, { text: invoice.details[i].priceItemIva + " €", style: ['tabPad'] }, { text: invoice.details[i].priceItemIva * invoice.details[i].qtdItem + " €", style: ['tabPad'] });
+            let ivaValue = 0;
+            if(invoice.details[i].ivaItem === 0){
+                ivaValue = (invoice.details[i].priceItemIva-(invoice.details[i].priceItemIva/1.06)) * invoice.details[i].qtdItem;
+                ivaValue = Math.round(ivaValue*100) / 100;
+            }else if(invoice.details[i].ivaItem === 1){
+                ivaValue = (invoice.details[i].priceItemIva-(invoice.details[i].priceItemIva/1.13)) * invoice.details[i].qtdItem;
+                ivaValue = Math.round(ivaValue*100) / 100;
+            }else{
+                ivaValue = (invoice.details[i].priceItemIva-(invoice.details[i].priceItemIva/1.23)) * invoice.details[i].qtdItem;
+                ivaValue = Math.round(ivaValue*100) / 100;
+            }
+            products.push([{ text: invoice.details[i].qtdItem.toString(), style: ['tabPad'] }, { text: invoice.details[i].descriptionItem, style: ['tabPad'] }, { text: invoice.details[i].ivaItem === 0 ? '6%' : invoice.details[i].ivaItem === 1 ? '13%' : '23%', style: ['tabPad'] }, { text: invoice.details[i].priceItemIva + " €", style: ['tabPad'] }, { text: ivaValue + ' €', style: ['tabPad'] }, { text: invoice.details[i].priceItemIva * invoice.details[i].qtdItem + " €", style: ['tabPad'] }]);
         }
-        console.log(products);
+        products.push([ { text: 'Total do documento', bold: true, colSpan: 2, style: ['tabPad'] }, '', '', '', { text: parseFloat(invoice.documentTotalIva).toFixed(2) + " €", style: ['tabPad'] }, { text: parseFloat(invoice.documentTotal).toFixed(2) + " €", bold: true, style: ['tabPad'] }]);
+        const factTipo = invoice.type === 0 ? 'FT ' + invoice.docNumber : invoice.type === 1 ? "NC " + invoice.docNumber : 'REC' + invoice.docNumber
+        const qrCode = 'A:508939810*B:' + invoice.clientAssociated.nif + '*C:PT*D:FR*E:N*F:' + new Date(invoice.date).getFullYear() + parseInt(new Date(invoice.date).getMonth()+1).toString().padStart(2, "0") + parseInt(new Date(invoice.date).getDate()).toString().padStart(2, "0") + '*G:' + factTipo + '*H:0*I1:PT*I3:' + parseInt(invoice.documentTotal - invoice.documentTotalIva) + '*I4:' + invoice.documentTotalIva + '*N:' + invoice.documentTotalIva + '*O:' + invoice.documentTotal + '*Q:' + invoice.softwareCode + '*R:0479';
         const PdfPrinter = require('pdfmake');
         const fonts = {
             Helvetica: {
@@ -33,7 +46,7 @@ module.exports = {
             pageMargins: [ 25, 20, 20, 20 ],
             defaultStyle: { font: "Helvetica" },
             info: {
-                title: invoice.type === 0 ? 'FT ' + invoice.docNumber : invoice.type === 1 ? "NC " + invoice.docNumber : 'REC' + invoice.docNumber,
+                title: factTipo,
                 author: 'IMM',
             },
             content: [
@@ -50,12 +63,12 @@ module.exports = {
                                 style: ['invoiceDetailsType']
                             },
                             {
-                                text: invoice.type === 0 ? 'FT ' + invoice.docNumber : invoice.type === 1 ? "NC " + invoice.docNumber : 'REC' + invoice.docNumber,
+                                text: factTipo,
                                 width: '*',
                                 style: ['invoiceDetailsNumber']
                             },
                             {
-                                text: 'Data: ' + parseInt(new Date(invoice.date).getDate()+1).toString().padStart(2, "0") + "/" + parseInt(new Date(invoice.date).getMonth()+1).toString().padStart(2, "0") + "/" + new Date(invoice.date).getFullYear(),
+                                text: 'Data: ' + parseInt(new Date(invoice.date).getDate()).toString().padStart(2, "0") + "/" + parseInt(new Date(invoice.date).getMonth()+1).toString().padStart(2, "0") + "/" + new Date(invoice.date).getFullYear(),
                                 width: '*',
                                 style: ['invoiceDetailsDate']
                             }
@@ -77,7 +90,7 @@ module.exports = {
                 {
                     columns: [
                         {
-                            text: 'Vencimento: ' + parseInt(new Date(invoice.vencimento).getDate()+1).toString().padStart(2, "0") + "/" + parseInt(new Date(invoice.vencimento).getMonth()+1).toString().padStart(2, "0") + "/" + new Date(invoice.vencimento).getFullYear(),
+                            text: 'Vencimento: ' + parseInt(new Date(invoice.vencimento).getDate()).toString().padStart(2, "0") + "/" + parseInt(new Date(invoice.vencimento).getMonth()+1).toString().padStart(2, "0") + "/" + new Date(invoice.vencimento).getFullYear(),
                             style: ['topText']
                         },
                         {
@@ -123,12 +136,8 @@ module.exports = {
                     style: 'tabelaProds',
                     table: {
                       headerRows: 1,
-                      widths: [ 20, '*', 30, 50, 80, 90 ],
-                      body: [
-                        [ { text: 'Qtd', style: ['tabPad'] }, { text: 'Descrição', style: ['tabPad'] }, { text: 'IVA', style: ['tabPad'] }, { text: 'Valor IVA', style: ['tabPad'] }, { text: 'Preço Unit (c/IVA)', style: ['tabPad'] }, { style: ['tabPad'], text: 'Preço Total (c/IVA)' }],
-                        products,
-                        [ { text: 'Total do documento', bold: true, colSpan: 2, style: ['tabPad'] }, '', '', { text: parseFloat(invoice.documentTotalIva).toFixed(2) + " €", style: ['tabPad'] }, '', { text: parseFloat(invoice.documentTotal).toFixed(2) + " €", bold: true, style: ['tabPad'] }]
-                      ]
+                      widths: [ 20, '*', 30, 80, 50, 90 ],
+                      body: products
                     }
                 },
                 {
@@ -151,7 +160,7 @@ module.exports = {
                     columns: [
                         [
                             { text: 'AT CODE: ' + invoice.atCode, style: 'bottomFacData' },
-                            { qr: 'A:508939810*B:246144564*C:PT*D:FR*E:N*F:20220520*G:FR 1/101443*H:0*I1:PT*I3:65.04*I4:14.96*N:14.96*O:80.00*Q:wFga*R:0479', fit: '150', style: [''] }
+                            { qr: qrCode, fit: '150' }
                         ],
                         [
                         {
