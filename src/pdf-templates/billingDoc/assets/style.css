@@ -1,0 +1,217 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: sans-serif;
+}
+
+div.billingDoc{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.docWrapper{
+    padding: 20px;
+}
+
+div.billingDoc .immLogo{
+    width: 130px;
+}
+
+.isBold{
+    font-weight: bold;
+}
+
+div.docInfo p{
+    font-size: 15px;
+}
+
+div.docInfo p:not(:first-child){
+    margin-top: 3px;
+}
+
+div.billingHeader{
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+div.billingHeader p:not(:first-child){
+    margin-top: 3px;
+}
+
+div.clientInfo{
+    margin-left: 45%;
+    margin-top: -40px;
+}
+
+div.adressInfo{
+    position: relative;
+    top: -115px;
+    margin-left: 10px;
+    font-size: 13px;
+}
+
+div.adressInfo p:not(:first-child){
+    margin-top: 5px;
+}
+
+div.documentBody{
+    margin-top: -55px;
+}
+
+div.documentBody p{
+    font-size: 12px;
+}
+
+div.documentBody table{
+    width: 100%;
+    font-size: 13px;
+    margin-top: 10px;
+    border-collapse: collapse; 
+}
+
+div.documentBody table tr td{
+    padding: 3px;
+}
+
+div.documentBody table tr td:nth-child(1){
+    width: 6%;
+}
+
+div.documentBody table tr td:nth-child(2){
+    width: auto;
+}
+
+div.documentBody table tr td:nth-child(3){
+    width: 6%;
+}
+
+div.documentBody table tr td:nth-child(4){
+    width: 16%;
+}
+
+div.documentBody table tr td:nth-child(5){
+    width: 10%;
+}
+
+div.documentBody table tr td:nth-child(6){
+    width: 14%;
+}
+
+div.documentBody table tr:nth-child(1){
+    border-bottom: 3px solid #000;
+}
+
+div.documentBody table tr:not(:nth-child(1)):not(:last-child){
+    border-bottom: 2px solid #AAA;
+}
+
+div#atQrCode{
+    width: 130px;
+    height: 130px;
+}
+
+div.docFooter{
+    width: 98%;
+    display: flex;
+    margin-left: 10px;
+    margin-bottom: 30px;
+    bottom: 0;
+    flex-direction: column;
+    position: absolute;
+}
+
+div.footerData{
+    display: flex;
+    flex-direction: row;
+}
+
+div.tipsZone{
+    color: #aaa;
+    font-size: 10px;
+    margin-left: 25px;
+}
+
+div.methodsList{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-left: 15px;
+    color: #444;
+}
+
+div.methodsList ul:last-child{
+    margin-left: 25px;
+}
+
+div.atDataZone{
+    font-size: 12px;
+}
+
+div.mbZone{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+div.mbData{
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    font-size: 12px;
+}
+
+div.mbData p:not(:first-child){
+    margin-top: 10px;
+}
+
+div.mbZone img{
+    width: 55px;
+}
+
+div.ivaTaxs table{
+    border-collapse: collapse;
+    margin-left: 20px;
+}
+
+div.ivaTaxs table tr td{
+    text-align: center;
+}
+
+div.ivaTaxs table tr td{
+    border: 1px solid #444;
+    font-size: 11px;
+    padding: 4px;
+}
+
+div.contacts{
+    text-align: end;
+    position: fixed;
+    right: 25px;
+}
+
+div.contacts p:last-child{
+    margin-top: 10px;
+    font-size: 25px;
+}
+
+div.immInfo{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: #aaa;
+    text-align: center;
+    font-size: 10px;
+}
+
+div#mbBox{
+    display: flex;
+    flex-direction: row;
+}
+
+.issuedLine{
+    margin-bottom: 5px;
+}

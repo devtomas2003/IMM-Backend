@@ -9,20 +9,21 @@ datasource db {
 
 model Clientes {
   clientId String @unique
+  clientNumber String @unique
   nome String
-  telef Int
-  nif Int
-  ccid String
-  muradaFat String
+  telef Int @unique
+  nif Int @unique
+  ccid String @unique
+  muradaBill String
   codPost String
-  localidadeFat String
-  email String
+  localidadeBill String
+  email String @unique
   password String?
-  fatEletronic Boolean
+  billEletronic Boolean
   accountState Int @default(0)
   saldo Float
   contracts Contracts[]
-  invoices Invoices[]
+  documents DocumentsHeader[]
 }
 
 model Tariffs {
@@ -59,29 +60,51 @@ model Contracts {
   state Int @default(0)
 }
 
-model Invoices {
+model DocumentsHeader {
   id String @unique
   type Int
+  docDescription String
   documentTotal Float
-  documentTotalIva Float
+  documentTotalIvaVT Float?
+  documentTotalIvaTR Float?
+  documentTotalIvaSS Float?
   clientAssociated Clientes @relation(fields: [clientId], references: [clientId])
   clientId String
-  docNumber Int @unique @default(autoincrement())
+  docNumber Int
+  serieAssociated Series @relation(fields: [serieId], references: [serieId])
+  serieId Int
   payMethod Int
+  typePeriodPay Int
   vencimento DateTime
   date DateTime
   softwareCode String
   atCode String
-  mbReference String
-  details InvoicesDetails[]
+  createdBy String
+  mbReference String?
+  observations String?
+  details DocumentsBody[]
 }
 
-model InvoicesDetails {
+model DocumentsBody {
   detailId String @unique
-  invoiceAssociated Invoices @relation(fields: [invoiceId], references: [id])
-  invoiceId String
+  documentAssociated DocumentsHeader @relation(fields: [documentId], references: [id])
+  documentId String
   descriptionItem String
   ivaItem Int
   priceItemIva Float
   qtdItem Int
+}
+
+model Series {
+  serieId Int @unique @default(autoincrement())
+  serieNumber String
+  expiration String
+  lastDocNumber Int
+  Documents DocumentsHeader[]
+}
+
+model DocsTempTokens {
+  tempTokenId String @unique
+  docId String
+  expiration DateTime
 }

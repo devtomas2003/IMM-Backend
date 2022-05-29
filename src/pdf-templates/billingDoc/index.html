@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>{docNumber}</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="assets/style.css" />
+    </head>
+    <body>
+        <div class="docWrapper">
+            <div class="billingDoc">
+                <img src="assets/logoBill.png" class="immLogo" />
+                <div class="docInfo">
+                    <p id="detailsDoc">{detailsDoc}</p>
+                    <p>Tipo de documento: <label class="isBold" id="docType">{docType}</label></p>
+                    <p>Nº: <label class="isBold" id="docNumber">{docNumber}</label></p>
+                </div>
+            </div>
+            <div class="billingHeader">
+                <div class="docHeader">
+                    <p>Nº Cliente: <label class="isBold" id="codCliente">{codCliente}</label></p>
+                    <p>Tipo de pagamento: <label class="isBold" id="payType">{payType}</label></p>
+                    <p>Data de emissão: <label class="isBold" id="issuedData">{issuedData}</label></p>
+                    <p>Data de vencimento: <label class="isBold" id="vencData">{vencData}</label></p>
+                    <p>Metodo de Pagamento: <label class="isBold" id="payMethod">{payMethod}</label></p>
+                    <p>NIF: <label class="isBold" id="nif">{nif}</label></p>
+                </div>
+                <div class="clientInfo">
+                    <img src="assets/moldura.png" />
+                    <div class="adressInfo">
+                        <p id="clientName">{clientName}</p>
+                        <p id="addressLine">{addressLine}</p>
+                        <p id="localityLine">{localityLine}</p>
+                        <p id="adrressId">{adrressId}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="documentBody">
+                <p id="showObs"><label class="isBold">Observações: </label><label id="observations">{observations}</label></p>
+                <table id="listProds"></table>
+            </div>
+            <div class="docFooter">
+                <div class="footerData">
+                    <div class="atDataZone">
+                        <p>AT-CODE: <label id="atCode">{atCode}</label></p>
+                        <div id="atQrCode"></div>
+                    </div>
+                    <div class="infoData">
+                        <div class="tipsZone">
+                            <p class="isBold">Como pagar as minhas faturas e efetuar carregamentos?</p>
+                            <p>Pode efetuar estas operações pelos seguintes metodos:</p>
+                            <div class="methodsList">
+                                <ul>
+                                    <li>MbWay (APP e site)</li>
+                                    <li>Multibanco (APP e site)</li>
+                                    <li>Transferência Bancaria (APP e site)</li>
+                                </ul>
+                                <ul>
+                                    <li>Cartão de debito/credito (APP e site)</li>
+                                    <li>PayShop (Fisicamente)</li>
+                                    <li>Lojas (Fisicamente)</li>
+                                </ul>
+                            </div>
+                            <div class="mbZone">
+                                <div id="mbBox">
+                                    <img src="assets/mb.png" />
+                                    <div class="mbData">
+                                        <p>Entidade: <label class="isBold">53197</label></p>
+                                        <p>Referência: <label class="isBold" id="refMb"></label></p>
+                                        <p>Valor: <label class="isBold" id="mbTotal">{mbTotal}</label></p>
+                                    </div>
+                                </div>
+                                <div class="ivaTaxs">
+                                    <table id="ivaDetails"></table>
+                                </div>
+                                <div class="contacts">
+                                    <p class="issuedLine">Emitido por: <label class="isBold" id="issuedBy">{issuedBy}</label></p>
+                                    <p>Linha de apoio técnico: 16802</p>
+                                    <p>Linha de apoio comercial: 10200</p>
+                                    <p class="isBold">imm.pt</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="immInfo">
+                    <p><label id="softCode">{softCode}</label> - Processado por programa certificado nº 2386/AT.</p>
+                    <p>IMM Comunicações, LDA. Rua XYZ, nº45, Lisboa, 3245-548 Lisboa. N.I.P.C: 508939810</p>
+                </div>
+            </div>
+        <script type="text/javascript" src="assets/qrcode.min.js"></script>
+        <script type="module" src="assets/script.js"></script>
+    </body>
+</html>

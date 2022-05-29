@@ -13,7 +13,7 @@ function generatePassword() {
 }
 
 module.exports = {
-    async getTempPassword(req, res){
+    async tempPassword(req, res){
         const { nif } = req.body;
         const findClient = await prisma.Clientes.findMany({
             where: {
@@ -39,7 +39,7 @@ module.exports = {
                     });
                 });
             });
-            await axios.get('http://192.168.42.101:8090/SendSMS?username=tomas&password=tomas&phone=00351' + findClient[0].telef + '&message=A sua password temporaria para aceder ao My IMM e ' + tempPass);
+            await axios.get('http://192.168.1.42:8090/SendSMS?username=tomas&password=tomas&phone=00351' + findClient[0].telef + '&message=A sua password temporaria para aceder ao My IMM e ' + tempPass);
             res.status(200).json({
                 status: "ok",
                 message: "Password enviada para o seu telemóvel."
@@ -61,7 +61,7 @@ module.exports = {
         if(mailSearch.length === 0 && teleSearch.length === 0){
             res.status(200).json({
                 status: "error",
-                message: "Utilizador não encontrado."
+                message: "Utilizador não encontrado, tente novamente."
             });
         }else{
             if(mailSearch.length !== 0){
@@ -78,7 +78,7 @@ module.exports = {
                     }else{
                         res.status(200).json({
                             status: "error",
-                            message: "Utilizador não encontrado."
+                            message: "Utilizador não encontrado, tente novamente."
                         });
                     }
                 });
@@ -97,11 +97,16 @@ module.exports = {
                     }else{
                         res.status(200).json({
                             status: "error",
-                            message: "Utilizador não encontrado."
+                            message: "Utilizador não encontrado, tente novamente."
                         });
                     }
                 });
             }
         }
+    },
+    async checkAuth(req, res){
+        res.status(200).json({
+            status: "ok"
+        });
     }
 };
