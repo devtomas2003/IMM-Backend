@@ -140,7 +140,7 @@ module.exports = {
                                         documentTotalIvaTR: Math.round(totalIvaTR * 100) / 100,
                                         documentTotalIvaSS: Math.round(totalIvaSS * 100) / 100,
                                         docDescription: docDesc,
-                                        typePeriodPay: 0,
+                                        typePeriodPay: 1,
                                         vencimento: new Date(),
                                         docNumber: newDocNumber,
                                         createdBy: 'Sistema',
